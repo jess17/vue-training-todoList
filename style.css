@@ -1,0 +1,63 @@
+#app {
+
+}
+
+.card {
+  margin:auto;
+  margin-top: 10vh;
+}
+
+.card-body {
+  margin: auto;
+}
+
+.todo {
+  margin-bottom: 2vh;
+  display: flex;
+  justify-content: space-between;
+}
+
+.header > div:nth-child(1) > input:nth-child(1) {
+  width: 29rem;
+  height: 38px;
+  margin-right: 10px;
+}
+
+.header > div:nth-child(1) {
+  display: flex;
+}
+
+.actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.todoName{
+  color: #53515177;
+  text-decoration: line-through;
+}
+
+.sortBy {
+  display: flex;
+  align-items: center;
+}
+
+.sort {
+  margin: auto 5px;
+  border: 1px solid transparent;
+  padding: 4px 6px;
+  user-select: none;
+  border-radius: 2px;
+}
+
+.sort:hover {
+  border: 1px solid #ff000027;
+  cursor: pointer;
+}
+
+.sortBy {
+  color: darkcyan;
+}
+ 
+ 

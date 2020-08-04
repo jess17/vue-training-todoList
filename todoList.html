@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To-do App</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+  <div id="app">
+    <div class="card" style="width: 35rem;">
+      <div class="card-header text-center">
+        <h1>
+          To-do List ({{ getIncomplete }})
+        </h1>
+      </div>
+      <div class="card-body">
+        <div class="card-title">
+          <section class="header">
+            <div>
+              <input type="text" name="todoInput" v-model="todoValue" placeholder="What's ur plan?" v-on:keyup.enter="addTodo(todoValue)"/>
+              <a class="btn btn-success" v-on:click="addTodo(todoValue)">+</a>
+            </div>
+            
+            
+            <div class="actions">
+              <a class="btn btn-primary" v-on:click="completeAll">Complete All</a>
+
+              <div class="removeActions">
+                <a class="btn btn-danger" v-on:click="removeComplete">Remove Completed Tasks</a>
+                <a class="btn btn-danger" v-on:click="removeAll">Remove All</a>
+              </div>
+            </div>
+            <hr>
+
+            <div class="sortBy">
+              Sort By: 
+              <div class="sort" @click="sort = 'all'">
+                All
+              </div>
+              <div class="sort" @click="sort = 'isInProgress'">
+                In Progress
+              </div>
+              <div class="sort" @click="sort = 'completed'">
+                Completed
+              </div>
+            </div>
+            <hr>
+          </section>
+        </div>
+        
+    
+        <section id="todos">
+          <div class="todo" v-for="todo in sortTodo" v-bind:key="todo.id">
+
+            <div class="todo-item">
+              <input type="checkbox" name="completed" v-model="todo.completed" class="chckbx">
+              <label for="completed" class="todoName" v-if="todo.completed">
+                {{ todo.name }}
+              </label>
+              <label for="completed" v-else="">
+                {{ todo.name }}
+              </label>
+            </div>
+            
+            <a class="btn btn-danger" v-on:click="() => removeTodo(todo.id)">Remove</a>
+          </div>
+          
+        </section>
+      </div>
+      
+  
+      <!-- <todo-list :header="header"></todo-list> -->
+  
+      <!-- <input v-model="inProgress">
+
+      </input >
+      <a class="btn btn-primary" v-on:click="getIncomplete">Get Size</a> -->
+
+
+    </div>
+  </div>
+
+  <!-- <template id="todo-list">
+    <section class="header">
+        <input type="text" name="todoInput" v-model="todoValue" placeholder="What's ur plan?" />
+        <button class="submit" v-on:click="createTodo">+</button>
+    </section>
+
+      <section id="todos">
+        <div class="todo" v-for="todo in todos" v-bind:key="todo.id">
+          <input type="checkbox" name="done" v-if="todo.done" checked>
+          <input type="checkbox" name="done" v-else>
+          <label for="done">
+            {{ todo.name }}
+          </label>
+          <button class="remove" v-on:click="() => removeTodo(todo.id)">Remove</button>
+        </div>
+      </section>
+    
+  </template> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    var app = new Vue({
+      el:'#app',
+      data: {
+        todos : [
+          {
+            id: 1,
+            name: "Task 1",
+            completed: false
+          },
+          {
+            id: 2,
+            name: "Task 2",
+            completed: true
+          }
+        ],
+        todoValue: '',
+        todosLength: 0,
+        inProgress: 1,
+        sort: "all",
+      },
+      created: function(){
+        this.getSize()
+      },
+      methods: {
+        getSize: function(){
+            this.todosLength = this.todos.length;
+            return this.todosLength;
+        },
+        addTodo: function (todo) {
+          let todoObject = {
+            id: this.todosLength+1,
+            name: todo,
+            completed: false
+          }
+          if(todo==''){
+            alert("Empty field")
+          }else{
+            this.todos.push(todoObject)
+          }
+          this.todosLength++
+          this.todoValue=''
+        },
+        removeTodo: function (id) {
+          this.todos = this.todos.filter(todo => todo.id != id);
+        },
+        removeAll: function(){
+          this.todos=[]
+        },
+        completeAll: function(){
+          for (let index = 0; index < this.todos.length; index++) {
+            this.todos[index].completed = true;
+            
+          }
+        },
+        removeComplete: function(){
+          this.todos = this.todos.filter(todo => !todo.completed);
+        }
+          
+      },
+      computed: {
+        getIncomplete: function(){
+          let incompleteTodo = this.todos.filter((todo) => !todo.completed)
+          return incompleteTodo.length
+        },
+        sortTodo: function(){
+          if( this.sort === "all"){
+            return this.todos
+          }else if (this.sort === "isInProgress"){
+            return this.todos.filter((todo) => !todo.completed) 
+          }else if(this.sort === "completed"){
+            return this.todos.filter((todo) => todo.completed) 
+          }
+        },
+
+      },
+      
+    });
+
+  </script>
+  
+</body>
+</html>
+
